@@ -12,7 +12,7 @@ import java.time.LocalDateTime;
 public class Address {
 
     @Id
-    @GeneratedValue //(strategy = GenerationType.IDENTITY)
+    @GeneratedValue
     private Long id;
 
     private String addressLine1; 

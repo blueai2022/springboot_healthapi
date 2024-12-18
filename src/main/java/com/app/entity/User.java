@@ -6,6 +6,7 @@ import lombok.NoArgsConstructor;
 import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
+import javax.persistence.Transient;
 import java.time.LocalDateTime;
 
 @Entity
@@ -18,6 +19,10 @@ public class User {
     private Long id;
 
     private String username;
+
+    @Transient // This will prevent the password field from being persisted by JPA
+    private String password; 
+
     private String hashedPassword;
     private String fullName;
     private String email;
