@@ -8,6 +8,8 @@ services:
       - POSTGRES_DB=app_submission
     ports:
       - "5432:5432"  # Exposing Postgres port 5432 for external connections
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
 
   api:
     build:
@@ -25,3 +27,7 @@ services:
       - "-jar"
       - "/app/app.jar"  # Path to the Spring Boot application JAR file in the container
     command: []  # No need to pass any additional command to start the Spring Boot app
+
+volumes:
+  postgres_data:  # Defining the volume used by Postgres
+    external: false  # This ensures Docker Compose will manage the volume for you.

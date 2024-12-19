@@ -14,7 +14,7 @@ spring:
     generate-ddl: true
     database-platform: org.hibernate.dialect.PostgreSQLDialect
     hibernate:
-      ddl-auto: update  # Use update (or 'validate') or none in production, create-drop is useful for dev only 
+      ddl-auto: update # Use update (or 'validate') or none in production, create-drop is useful for dev only 
       use-new-id-generator-mappings: false
     properties:
       hibernate:

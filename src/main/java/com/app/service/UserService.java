@@ -17,7 +17,8 @@ public class UserService {
     // Create a new user
     public User createUser(User user) {
         // You can add validation for unique usernames or emails before saving
-        return userRepository.save(user);
+        User savedUser = userRepository.save(user);
+        return getUser(savedUser.getUsername()).orElse(null);
     }
 
     public String loginUser(String username, String password) {
