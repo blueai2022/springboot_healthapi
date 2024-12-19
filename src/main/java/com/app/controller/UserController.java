@@ -81,16 +81,16 @@ public class UserController {
     
         // If the userOptional is present, transform it
         userOptional.ifPresentOrElse(user -> {
-            result[0] = new UserResponseDTO();
-
-            result[0].setUsername(user.getUsername());
-            result[0].setFullName(user.getFullName());
-            result[0].setEmail(user.getEmail());
-            result[0].setAgency(user.getAgency());
-            result[0].setAppContact(user.getAppContact());
-            result[0].setAppContactEmail(user.getAppContactEmail());
-            result[0].setPasswordChangedAt(user.getPasswordChangedAt());
-            result[0].setCreatedAt(user.getCreatedAt());
+                result[0] = new UserResponseDTO.Builder()
+                .username(user.getUsername())
+                .fullName(user.getFullName())
+                .email(user.getEmail())
+                .agency(user.getAgency())
+                .appContact(user.getAppContact())
+                .appContactEmail(user.getAppContactEmail())
+                .passwordChangedAt(user.getPasswordChangedAt())
+                .createdAt(user.getCreatedAt())
+                .build();
         }, () -> {
             // No-op: If Optional is empty, result[0] will stay null
         });
