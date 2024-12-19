@@ -23,13 +23,26 @@ public class UserController {
     private final UserService userService;
     // private final TokenMaker tokenMaker;
 
+    // @PostMapping
+    // public ResponseEntity<User> createUser(@RequestBody User user) {
+    //     try {
+    //         User createdUser = userService.createUser(user);
+    //         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+    //     } catch (Exception e) {
+    //         // Handle exception and return a specific response
+    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+    //     }
+    // }
+
     @PostMapping
     public ResponseEntity<User> createUser(@RequestBody User user) {
+        LOGGER.debug("Received request to create user: {}", user);
         try {
             User createdUser = userService.createUser(user);
+            LOGGER.debug("User created successfully: {}", createdUser);
             return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
         } catch (Exception e) {
-            // Handle exception and return a specific response
+            LOGGER.error("Error creating user: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }

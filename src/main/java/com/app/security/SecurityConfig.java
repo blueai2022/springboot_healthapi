@@ -31,11 +31,13 @@ public class SecurityConfig {
     public SecurityFilterChain securityFilterChain(HttpSecurity http) throws Exception {
         http
             .authorizeRequests()
-            .antMatchers("/login", "/register").permitAll() // Allow public access to login/register
+            .antMatchers("/api/v1/users/login", "/api/v1/users/register").permitAll() // Correct path for login and register
+            .antMatchers("/api/v1/users").permitAll() // Allow public access to the createUser endpoint
             .anyRequest().authenticated() // Require authentication for all other requests
             .and()
             .csrf().disable(); // Disable CSRF for now (may need re-enabling depending on your authentication method)
 
         return http.build();
     }
+    
 }

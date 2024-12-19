@@ -1,5 +1,5 @@
 server:
-  port: 8090
+  port: 8080
 
 spring:
   datasource:
@@ -28,7 +28,10 @@ logging:
   level:
     org.springframework: ERROR
     com.app: DEBUG
+    org.springframework.web.servlet.DispatcherServlet: DEBUG
   pattern:
     console: "%d{HH:mm:ss.SSS} [%t] %-5level %logger{36} - %msg%n"
     file: "%d %p %c{1.} [%t] %m%n"
-  file: app.log
+  file:
+    name: /app/app.log  # Make sure logs are written to /app/app.log
+
