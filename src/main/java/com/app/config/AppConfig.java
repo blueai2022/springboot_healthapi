@@ -19,14 +19,12 @@ public class AppConfig {
     // Define the UserDetailsService bean
     @Bean
     public UserDetailsService userDetailsService() {
-        // Define a dummy user for illustration purposes
         UserDetails user = User.builder()
                 .username("user")
-                .password("{noop}password")  // {noop} is a password encoder that does not encode the password
+                .password("{noop}password")  
                 .roles("USER")
                 .build();
 
-        // You can create an InMemoryUserDetailsManager with the user (you can also load from a DB or other source)
         return new InMemoryUserDetailsManager(user);
     }
 }
