@@ -15,6 +15,4 @@ public class UserResponseDTO {
     private String appContactEmail;
     private LocalDateTime passwordChangedAt;
     private LocalDateTime createdAt;
-
-    // Constructor, Getters, and Setters
 }

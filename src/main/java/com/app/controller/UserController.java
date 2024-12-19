@@ -35,12 +35,13 @@ public class UserController {
     // }
 
     @PostMapping
-    public ResponseEntity<User> createUser(@RequestBody User user) {
+    public ResponseEntity<UserResponseDTO> createUser(@RequestBody User user) {
         LOGGER.debug("Received request to create user: {}", user);
         try {
             User createdUser = userService.createUser(user);
+            UserResponseDTO userResponseDTO = transform(Optional.ofNullable(createdUser));
             LOGGER.debug("User created successfully: {}", createdUser);
-            return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
+            return ResponseEntity.status(HttpStatus.CREATED).body(userResponseDTO);
         } catch (Exception e) {
             LOGGER.error("Error creating user: {}", e.getMessage(), e);
             return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
@@ -75,20 +76,27 @@ public class UserController {
     }
 
     public UserResponseDTO transform(Optional<User> userOptional) {
-        if (userOptional.isPresent()) {
-            User user = userOptional.get();
-            UserResponseDTO userResponseDTO = new UserResponseDTO();
-            userResponseDTO.setUsername(user.getUsername());
-            userResponseDTO.setFullName(user.getFullName());
-            userResponseDTO.setEmail(user.getEmail());
-            userResponseDTO.setAgency(user.getAgency());
-            userResponseDTO.setAppContact(user.getAppContact());
-            userResponseDTO.setAppContactEmail(user.getAppContactEmail());
-            userResponseDTO.setPasswordChangedAt(user.getPasswordChangedAt());
-            userResponseDTO.setCreatedAt(user.getCreatedAt());
-            return userResponseDTO;
-        } else {
-            return null;  // or throw an exception if needed
-        }
+        // Create a variable to hold the transformed DTO or null
+        UserResponseDTO[] result = new UserResponseDTO[1];  // Using array to hold a reference
+    
+        // If the userOptional is present, transform it
+        userOptional.ifPresentOrElse(user -> {
+            result[0] = new UserResponseDTO();
+
+            result[0].setUsername(user.getUsername());
+            result[0].setFullName(user.getFullName());
+            result[0].setEmail(user.getEmail());
+            result[0].setAgency(user.getAgency());
+            result[0].setAppContact(user.getAppContact());
+            result[0].setAppContactEmail(user.getAppContactEmail());
+            result[0].setPasswordChangedAt(user.getPasswordChangedAt());
+            result[0].setCreatedAt(user.getCreatedAt());
+        }, () -> {
+            // No-op: If Optional is empty, result[0] will stay null
+        });
+    
+        // Return the result, which will be null if no user was present
+        return result[0];
     }
+        
 }
