@@ -1,7 +1,7 @@
 package com.app.service;
 
 import com.app.entity.User;
-import com.app.security.TokenMaker;
+// import com.app.security.TokenMaker;
 import com.app.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
@@ -20,11 +20,11 @@ public class UserService {
         return userRepository.save(user);
     }
 
-    public String loginUser(String username, String password, TokenMaker tokenMaker) {
+    public String loginUser(String username, String password) {
         // Validate username and password (this would likely involve hashing the password)
         Optional<User> userOptional = userRepository.findByUsername(username);
         if (userOptional.isPresent() && userOptional.get().getPassword().equals(password)) {
-            return tokenMaker.createToken(username);
+            return "TEMP_TOKEN"; //tokenMaker.createToken(username);
         } else {
             throw new IllegalArgumentException("Invalid credentials");
         }

@@ -1,0 +1,27 @@
+version: "3.9"
+services:
+  postgres:
+    image: postgres:14-alpine
+    environment:
+      - POSTGRES_USER=root
+      - POSTGRES_PASSWORD=secretpwd
+      - POSTGRES_DB=app_submission
+    ports:
+      - "5432:5432"  # Exposing Postgres port 5432 for external connections
+
+  api:
+    build:
+      context: .
+      dockerfile: Dockerfile  # Ensure you have the correct Dockerfile for your Spring Boot app
+    ports:
+      - "8080:8080"  # Exposing the Spring Boot API on port 8080
+    environment:
+      - DB_SOURCE=jdbc:postgresql://postgres:5432/app_submission?sslmode=disable  # Postgres connection URL for Spring Boot
+    depends_on:
+      - postgres  # Ensures that the API service starts after Postgres is ready
+    entrypoint:
+      # The entrypoint to run the Spring Boot application JAR file
+      - "java"
+      - "-jar"
+      - "/app/app.jar"  # Path to the Spring Boot application JAR file in the container
+    command: []  # No need to pass any additional command to start the Spring Boot app
