@@ -61,9 +61,9 @@ public class UserController {
         }
     }
 
-    @GetMapping("/users/{username}")
+    @GetMapping("/{username}")
     public UserResponseDTO getUser(@PathVariable String username) {
-        LOGGER.debug("Call getUser API for user: {}", username);
+        LOGGER.debug("Call getUser API for user.");
         try {
             // Retrieve the user based on username
             Optional<User> user = userService.getUser(username);

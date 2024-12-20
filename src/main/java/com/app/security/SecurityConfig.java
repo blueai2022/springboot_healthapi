@@ -32,7 +32,7 @@ public class SecurityConfig {
         http
             .authorizeRequests()
             .antMatchers("/api/v1/users/login", "/api/v1/users/register").permitAll() // Correct path for login and register
-            .antMatchers("/api/v1/users").permitAll() // Allow public access to the createUser endpoint
+            .antMatchers("/api/v1/users", "/api/v1/users/{username}").permitAll() // Allow public access to the createUser endpoint
             .anyRequest().authenticated() // Require authentication for all other requests
             .and()
             .csrf().disable(); // Disable CSRF for now (may need re-enabling depending on your authentication method)
