@@ -3,6 +3,8 @@ package com.app.service;
 import com.app.entity.User;
 // import com.app.security.TokenMaker;
 import com.app.repository.UserRepository;
+import com.app.util.PasswordUtil;
+
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +18,13 @@ public class UserService {
 
     // Create a new user
     public User createUser(User user) {
+        if (checkUserExistence(user.getUsername())) {
+            throw new IllegalArgumentException("Username is already taken");
+        }
+
+        String hashedPassword = PasswordUtil.encryptPassword(user.getPassword());
+        user.setHashedPassword(hashedPassword);
+
         // You can add validation for unique usernames or emails before saving
         User savedUser = userRepository.save(user);
         return getUser(savedUser.getUsername()).orElse(null);

@@ -13,7 +13,6 @@ public record UserResponseDTO(
     LocalDateTime createdAt
 ) {
     
-    // Static Builder class inside the record to implement Builder pattern
     public static class Builder {
         private String username;
         private String fullName;
