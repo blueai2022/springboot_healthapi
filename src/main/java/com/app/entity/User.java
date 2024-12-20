@@ -8,7 +8,6 @@ import javax.persistence.Entity;
 import javax.persistence.GeneratedValue;
 import javax.persistence.Id;
 import javax.persistence.PrePersist;
-import javax.persistence.PreUpdate;
 import javax.persistence.Transient;
 
 import org.hibernate.annotations.CreationTimestamp;
@@ -28,7 +27,7 @@ public class User {
 
     private String username;
 
-    @Transient // This will prevent the password field from being persisted by JPA
+    @Transient
     private String password; 
 
     @JsonIgnore
@@ -46,11 +45,9 @@ public class User {
     private LocalDateTime createdAt;
 
     @PrePersist
-    // @PreUpdate
     public void updatePasswordChangedAt() {
-        // Only update passwordChangedAt if the password has changed (i.e., is not empty or null)
-        if (this.password != null && !this.password.isEmpty()) {
-            this.passwordChangedAt = LocalDateTime.now();  // Set current timestamp when password is set
+        if (this.hashedPassword != null && !this.hashedPassword.isBlank()) {
+            this.passwordChangedAt = LocalDateTime.now(); 
         }
     }
 }

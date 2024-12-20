@@ -8,11 +8,15 @@ public class PasswordUtil {
 
     // Utility method to encrypt/hash the password
     public static String encryptPassword(String rawPassword) {
-        return passwordEncoder.encode(rawPassword);  // Hash the raw password using BCrypt
+        // Avoid BCrypt Exception for blank password
+        if (rawPassword == null || rawPassword.isBlank()) {
+            return null;
+        }
+        return passwordEncoder.encode(rawPassword);  
     }
 
     // Utility method to check if the raw password matches the hashed password
     public static boolean checkPasswordMatch(String rawPassword, String hashedPassword) {
-        return passwordEncoder.matches(rawPassword, hashedPassword);  // Compare raw password with hashed password
+        return passwordEncoder.matches(rawPassword, hashedPassword);  
     }
 }
