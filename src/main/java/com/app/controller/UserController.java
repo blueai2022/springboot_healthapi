@@ -2,8 +2,8 @@ package com.app.controller;
 
 import com.app.entity.User;
 import com.app.dto.UserResponseDTO;
+import com.app.dto.LoginRequestDTO;
 import com.app.service.UserService;
-// import com.app.security.TokenMaker;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -21,18 +21,6 @@ public class UserController {
 
     private static final Logger LOGGER = LoggerFactory.getLogger(UserController.class);
     private final UserService userService;
-    // private final TokenMaker tokenMaker;
-
-    // @PostMapping
-    // public ResponseEntity<User> createUser(@RequestBody User user) {
-    //     try {
-    //         User createdUser = userService.createUser(user);
-    //         return ResponseEntity.status(HttpStatus.CREATED).body(createdUser);
-    //     } catch (Exception e) {
-    //         // Handle exception and return a specific response
-    //         return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
-    //     }
-    // }
 
     @PostMapping
     public ResponseEntity<UserResponseDTO> createUser(@RequestBody User user) {
@@ -49,11 +37,11 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String loginUser(@RequestParam String username, @RequestParam String password) {
+    public String loginUser(@RequestBody LoginRequestDTO loginRequest) {
         LOGGER.debug("Call loginUser API");
         try {
             // Attempt to login and generate a token
-            String token = userService.loginUser(username, password); //, tokenMaker);
+            String token = userService.loginUser(loginRequest.getUsername(), loginRequest.getPassword());
             return token;  // Return the token as a plain String
         } catch (Exception e) {
             // Handle invalid credentials or other errors

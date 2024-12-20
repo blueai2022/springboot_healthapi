@@ -34,7 +34,7 @@ public class UserService {
     public String loginUser(String username, String password) {
         // Validate username and password (this would likely involve hashing the password)
         Optional<User> userOptional = userRepository.findByUsername(username);
-        if (userOptional.isPresent() && userOptional.get().getPassword().equals(password)) {
+        if (userOptional.isPresent() && PasswordUtil.checkPasswordMatch(password, userOptional.get().getHashedPassword()) ) {
             return "TEMP_TOKEN"; //tokenMaker.createToken(username);
         } else {
             throw new IllegalArgumentException("Invalid credentials");
