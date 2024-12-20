@@ -1,5 +1,7 @@
 package com.app.service;
 
+import com.app.dto.LoginResponseDTO;
+import com.app.dto.UserResponseDTO;
 import com.app.entity.User;
 // import com.app.security.TokenMaker;
 import com.app.repository.UserRepository;
@@ -31,11 +33,29 @@ public class UserService {
         return getUser(savedUser.getUsername()).orElse(null);
     }
 
-    public String loginUser(String username, String password) {
+    public LoginResponseDTO loginUser(String username, String password) {
         // Validate username and password (this would likely involve hashing the password)
         Optional<User> userOptional = userRepository.findByUsername(username);
         if (userOptional.isPresent() && PasswordUtil.checkPasswordMatch(password, userOptional.get().getHashedPassword()) ) {
-            return "TEMP_TOKEN"; //tokenMaker.createToken(username);
+            User user = userOptional.get();
+            UserResponseDTO userResponseDTO = new UserResponseDTO.Builder()
+                .username(user.getUsername())
+                .fullName(user.getFullName())
+                .email(user.getEmail())
+                .agency(user.getAgency())
+                .appContact(user.getAppContact())
+                .appContactEmail(user.getAppContactEmail())
+                .createdAt(user.getCreatedAt())
+                .build();
+            
+            LoginResponseDTO response = new LoginResponseDTO.Builder()
+                .user(userResponseDTO)  // Set the user
+                .sessionId("generated-session-id")  // Set the sessionId
+                .accessToken("generated-jwt-token")  // Set the access token
+                .build();  // Create the final object
+
+            
+            return response; //tokenMaker.createToken(username);
         } else {
             throw new IllegalArgumentException("Invalid credentials");
         }

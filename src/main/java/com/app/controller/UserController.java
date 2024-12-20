@@ -3,6 +3,7 @@ package com.app.controller;
 import com.app.entity.User;
 import com.app.dto.UserResponseDTO;
 import com.app.dto.LoginRequestDTO;
+import com.app.dto.LoginResponseDTO;
 import com.app.service.UserService;
 import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
@@ -37,12 +38,11 @@ public class UserController {
     }
 
     @PostMapping("/login")
-    public String loginUser(@RequestBody LoginRequestDTO loginRequest) {
+    public LoginResponseDTO loginUser(@RequestBody LoginRequestDTO loginRequest) {
         LOGGER.debug("Call loginUser API");
         try {
-            // Attempt to login and generate a token
-            String token = userService.loginUser(loginRequest.getUsername(), loginRequest.getPassword());
-            return token;  // Return the token as a plain String
+            LoginResponseDTO loginResponse = userService.loginUser(loginRequest.getUsername(), loginRequest.getPassword());
+            return loginResponse;  // Return the token as a plain String
         } catch (Exception e) {
             // Handle invalid credentials or other errors
             throw new ResponseStatusException(HttpStatus.UNAUTHORIZED, "Invalid credentials", e);
@@ -70,15 +70,15 @@ public class UserController {
         // If the userOptional is present, transform it
         userOptional.ifPresentOrElse(user -> {
                 result[0] = new UserResponseDTO.Builder()
-                .username(user.getUsername())
-                .fullName(user.getFullName())
-                .email(user.getEmail())
-                .agency(user.getAgency())
-                .appContact(user.getAppContact())
-                .appContactEmail(user.getAppContactEmail())
-                .passwordChangedAt(user.getPasswordChangedAt())
-                .createdAt(user.getCreatedAt())
-                .build();
+                    .username(user.getUsername())
+                    .fullName(user.getFullName())
+                    .email(user.getEmail())
+                    .agency(user.getAgency())
+                    .appContact(user.getAppContact())
+                    .appContactEmail(user.getAppContactEmail())
+                    .passwordChangedAt(user.getPasswordChangedAt())
+                    .createdAt(user.getCreatedAt())
+                    .build();
         }, () -> {
             // No-op: If Optional is empty, result[0] will stay null
         });
